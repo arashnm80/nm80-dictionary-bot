@@ -87,6 +87,7 @@ string learner_webster(string search){
         curl_easy_perform(curl); 
         curl_easy_cleanup(curl);
     }
+    ofstream log("log", ios::app);
     try{
         json j = json::parse(readBuffer);
         stringstream out;
@@ -110,7 +111,7 @@ string learner_webster(string search){
                         }
                         app_def_title = j[entry]["meta"]["app-shortdef"]["def"][def].get<string>();
                         out << formatter(app_def_title);
-cout << "debug:\t" << entry << "\t" << app_def_title << endl;
+log << "debug:\t" << entry << "\t" << app_def_title << endl;
                         if(!j[entry]["shortdef"][0].empty()){
                             string def_title = j[entry]["shortdef"][0].get<string>();
                             if(string("{/it}") == app_def_title.substr(app_def_title.size() - 5)){
