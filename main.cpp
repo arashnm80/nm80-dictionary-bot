@@ -80,7 +80,6 @@ string learner_webster(string search){
     std::string readBuffer;
     std::string key = getenv("LEARNER_WEBSTER_API_KEY");
     std::string link = "https://www.dictionaryapi.com/api/v3/references/learners/json/" + search + "?key=" + key;
-    cout << link << endl;
     curl = curl_easy_init();
     if(curl){
         curl_easy_setopt(curl, CURLOPT_URL, link.c_str());
