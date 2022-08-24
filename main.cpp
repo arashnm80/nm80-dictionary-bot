@@ -125,6 +125,7 @@ string learner_webster(string search){
                 }
             }
         }
+        dic_log.close();
         if(out.str().empty()){
             return "Exact result not found :(\nTry to search different";
         }else{
