@@ -113,7 +113,7 @@ string learner_webster(string search){
                         }
                         app_def_title = j[entry]["meta"]["app-shortdef"]["def"][def].get<string>();
                         out << formatter(app_def_title);
-                        // dic_log << "debug:\t" << entry << "\t" << app_def_title << endl;
+                        dic_log << "debug:\t" << entry << "\t" << app_def_title << endl;
                         if(!j[entry]["shortdef"][0].empty()){
                             string def_title = j[entry]["shortdef"][0].get<string>();
                             if(string("{/it}") == app_def_title.substr(app_def_title.size() - 5)){
