@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.4)
-project(nm80_dictionary_bot)
+project(nm80-dictionary-bot)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wall")
 set(Boost_USE_MULTITHREADED ON)
@@ -14,6 +14,6 @@ if (CURL_FOUND)
     add_definitions(-DHAVE_CURL)
 endif()
 
-add_executable(nm80_dictionary_bot ../main.cpp)
+add_executable(nm80-dictionary-bot ../main.cpp)
 
-target_link_libraries(nm80_dictionary_bot /usr/local/lib/libTgBot.a ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
+target_link_libraries(nm80-dictionary-bot /usr/local/lib/libTgBot.a ${CMAKE_THREAD_LIBS_INIT} ${OPENSSL_LIBRARIES} ${Boost_LIBRARIES} ${CURL_LIBRARIES})
