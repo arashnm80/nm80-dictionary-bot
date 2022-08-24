@@ -87,7 +87,7 @@ string learner_webster(string search){
         curl_easy_perform(curl); 
         curl_easy_cleanup(curl);
     }
-    ofstream log("log", ios::app);
+    ofstream dic_log("dic_log", ios::app);
     try{
         json j = json::parse(readBuffer);
         stringstream out;
@@ -111,7 +111,7 @@ string learner_webster(string search){
                         }
                         app_def_title = j[entry]["meta"]["app-shortdef"]["def"][def].get<string>();
                         out << formatter(app_def_title);
-log << "debug:\t" << entry << "\t" << app_def_title << endl;
+                        // dic_log << "debug:\t" << entry << "\t" << app_def_title << endl;
                         if(!j[entry]["shortdef"][0].empty()){
                             string def_title = j[entry]["shortdef"][0].get<string>();
                             if(string("{/it}") == app_def_title.substr(app_def_title.size() - 5)){
@@ -134,13 +134,14 @@ log << "debug:\t" << entry << "\t" << app_def_title << endl;
 }
 
 int main() {
+    ofstream tel_log("tel_log", ios::app);
     std::string TEST_BOT_API = getenv("NM80_DICTIONARY_BOT");
     TgBot::Bot bot(TEST_BOT_API);
     bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
         bot.getApi().sendMessage(message->chat->id, "Hi!");
     });
     bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message) {
-        printf("User wrote %s\n", message->text.c_str());
+        // printf("User wrote %s\n", message->text.c_str());
         if (StringTools::startsWith(message->text, "/start")) {
             return;
         }
@@ -150,10 +151,10 @@ int main() {
         printf("Bot name: %s\n", bot.getApi().getMe()->firstName.c_str());
         TgBot::TgLongPoll longPoll(bot);
         while (true) {
-            printf("Long poll started\n");
+            tel_log << "Long poll started\n";
             longPoll.start();
         }
     } catch (TgBot::TgException& e) {
-        printf("error: %s\n", e.what());
+        tel_log << "error: " << e.what();
     }
 }
