@@ -7,6 +7,9 @@
 using namespace std;
 using json = nlohmann::json;
 
+string start_message = "Hello, welcome to the \"nm80 dictionary bot\".\n\
+                        Send the word that you want to translate.";
+
 string lowercase(string text){
     for(auto & c : text){
         if(c >= 65 && c <= 90){
@@ -138,7 +141,7 @@ int main() {
     std::string TEST_BOT_API = getenv("NM80_DICTIONARY_BOT");
     TgBot::Bot bot(TEST_BOT_API);
     bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, "Hi!");
+        bot.getApi().sendMessage(message->chat->id, start_message);
     });
     bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message) {
         // printf("User wrote %s\n", message->text.c_str());
@@ -148,7 +151,8 @@ int main() {
         bot.getApi().sendMessage(message->chat->id, "<strong>Meanings of \"" + message->text + "\" from Merriam Webster Learner's Dictionary: \n\n</strong>" + learner_webster(message->text),false,0,std::make_shared<TgBot::GenericReply>(),"html", false);
     });
     try {
-        printf("Bot name: %s\n", bot.getApi().getMe()->firstName.c_str());
+        tel_log << "bot name: " << bot.getApi().getMe()->firstName.c_str() << endl;
+        // printf("Bot name: %s\n", bot.getApi().getMe()->firstName.c_str());
         TgBot::TgLongPoll longPoll(bot);
         while (true) {
             tel_log << "Long poll started\n";
