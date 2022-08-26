@@ -102,6 +102,7 @@ string learner_webster(string search){
                     if (!j[entry]["meta"]["app-shortdef"]["fl"].empty()){
                         functional_label = " (" + j[entry]["meta"]["app-shortdef"]["fl"].get<string>() + ")";
                     }
+                    dic_log << "\n\n" << entry_title << endl;
                     out << "<strong>" << formatter(entry_title)
                             << functional_label
                             << ": \n" << "</strong>";
