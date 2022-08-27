@@ -7,8 +7,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-string start_message = "Hello, welcome to the \"nm80 dictionary bot\".\n\
-                        Send the word that you want to translate.";
+string start_message = "Hello, welcome to the \"nm80 dictionary bot\".\nSend the word that you want to translate.";
 
 string lowercase(string text){
     for(auto & c : text){
