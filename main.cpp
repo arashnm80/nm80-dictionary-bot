@@ -7,7 +7,7 @@
 using namespace std;
 using json = nlohmann::json;
 
-string start_message = "Hello, welcome to the \"nm80 dictionary bot\".\nSend the word that you want to translate.";
+string start_message = "Hello, welcome to the <strong>nm80 dictionary bot</strong>.\nSend a word.";
 
 string lowercase(string text){
     for(auto & c : text){
@@ -150,7 +150,7 @@ int main() {
     std::string BOT_API = getenv("NM80_DICTIONARY_BOT_API");
     TgBot::Bot bot(BOT_API);
     bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
-        bot.getApi().sendMessage(message->chat->id, start_message);
+        bot.getApi().sendMessage(message->chat->id, start_message,false,0,std::make_shared<TgBot::GenericReply>(),"html", false);
     });
     bot.getEvents().onAnyMessage([&bot](TgBot::Message::Ptr message) {
         // printf("User wrote %s\n", message->text.c_str());
