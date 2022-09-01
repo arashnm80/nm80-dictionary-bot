@@ -93,7 +93,7 @@ string learner_webster(string search){
         try{
             json j = json::parse(readBuffer);
             stringstream out;
-            dic_log << endl;
+            dic_log << "-------------------------------------------------\n";
             for(unsigned entry = 0; entry < j.size(); entry++){
                 try{
                     if(!j[entry]["meta"]["app-shortdef"].empty()){
@@ -147,8 +147,8 @@ string learner_webster(string search){
 
 int main() {
     ofstream tel_log("tel_log", ios::app);
-    std::string TEST_BOT_API = getenv("NM80_DICTIONARY_BOT_API");
-    TgBot::Bot bot(TEST_BOT_API);
+    std::string BOT_API = getenv("NM80_DICTIONARY_BOT_API");
+    TgBot::Bot bot(BOT_API);
     bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
         bot.getApi().sendMessage(message->chat->id, start_message);
     });
