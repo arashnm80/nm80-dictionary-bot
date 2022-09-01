@@ -73,76 +73,80 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 }
 
 string learner_webster(string search){
-    CURL * curl;
-    // CURLcode res;
-    search = lowercase(search);
-    std::string readBuffer;
-    std::string key = getenv("LEARNER_WEBSTER_API_KEY");
-    std::string link = "https://www.dictionaryapi.com/api/v3/references/learners/json/" + search + "?key=" + key;
-    curl = curl_easy_init();
-    if(curl){
-        curl_easy_setopt(curl, CURLOPT_URL, link.c_str());
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-        // res = curl_easy_perform(curl); 
-        curl_easy_perform(curl); 
-        curl_easy_cleanup(curl);
-    }
-    ofstream dic_log("dic_log", ios::app);
     try{
-        json j = json::parse(readBuffer);
-        stringstream out;
-        for(unsigned entry = 0; entry < j.size(); entry++){
-            try{
-                if(!j[entry]["meta"]["app-shortdef"].empty()){
-                    string entry_title = j[entry]["meta"]["app-shortdef"]["hw"].get<string>();
-                    if(string::npos != lowercase(entry_title).find(search)){ // check for exact related ones
-                        entry_title = entry_title.substr(0, entry_title.find(":"));
-                        string functional_label;
-                        if (!j[entry]["meta"]["app-shortdef"]["fl"].empty()){
-                            functional_label = " (" + j[entry]["meta"]["app-shortdef"]["fl"].get<string>() + ")";
-                        }
-                        dic_log << "\n\n" << entry_title << endl;
-                        out << "<strong>" << formatter(entry_title)
-                                << functional_label
-                                << ": \n" << "</strong>";
-                        for(unsigned def = 0; def < j[entry]["meta"]["app-shortdef"]["def"].size(); def++){
-                            string app_def_title;
-                            if("" == j[entry]["meta"]["app-shortdef"]["def"][def]){
-                                out << "<strong> :  </strong>" << formatter(j[entry]["shortdef"][def].get<string>()) << "\n";
-                                break;
+        CURL * curl;
+        // CURLcode res;
+        search = lowercase(search);
+        std::string readBuffer;
+        std::string key = getenv("LEARNER_WEBSTER_API");
+        std::string link = "https://www.dictionaryapi.com/api/v3/references/learners/json/" + search + "?key=" + key;
+        curl = curl_easy_init();
+        if(curl){
+            curl_easy_setopt(curl, CURLOPT_URL, link.c_str());
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+            // res = curl_easy_perform(curl); 
+            curl_easy_perform(curl); 
+            curl_easy_cleanup(curl);
+        }
+        ofstream dic_log("dic_log", ios::app);
+        try{
+            json j = json::parse(readBuffer);
+            stringstream out;
+            for(unsigned entry = 0; entry < j.size(); entry++){
+                try{
+                    if(!j[entry]["meta"]["app-shortdef"].empty()){
+                        string entry_title = j[entry]["meta"]["app-shortdef"]["hw"].get<string>();
+                        if(string::npos != lowercase(entry_title).find(search)){ // check for exact related ones
+                            entry_title = entry_title.substr(0, entry_title.find(":"));
+                            string functional_label;
+                            if (!j[entry]["meta"]["app-shortdef"]["fl"].empty()){
+                                functional_label = " (" + j[entry]["meta"]["app-shortdef"]["fl"].get<string>() + ")";
                             }
-                            app_def_title = j[entry]["meta"]["app-shortdef"]["def"][def].get<string>();
-                            out << formatter(app_def_title);
-                            dic_log << "debug:\t" << entry << "\t" << app_def_title << endl;
-                            if(!j[entry]["shortdef"][0].empty()){
-                                string def_title = j[entry]["shortdef"][0].get<string>();
-                                if(string("{/it}") == app_def_title.substr(app_def_title.size() - 5)){
-                                    out << "<strong> :  </strong>" << formatter(def_title);
+                            dic_log << "\n\n" << entry_title << endl;
+                            out << "<strong>" << formatter(entry_title)
+                                    << functional_label
+                                    << ": \n" << "</strong>";
+                            for(unsigned def = 0; def < j[entry]["meta"]["app-shortdef"]["def"].size(); def++){
+                                string app_def_title;
+                                if("" == j[entry]["meta"]["app-shortdef"]["def"][def]){
+                                    out << "<strong> :  </strong>" << formatter(j[entry]["shortdef"][def].get<string>()) << "\n";
+                                    break;
                                 }
+                                app_def_title = j[entry]["meta"]["app-shortdef"]["def"][def].get<string>();
+                                out << formatter(app_def_title);
+                                dic_log << "debug:\t" << entry << "\t" << app_def_title << endl;
+                                if(!j[entry]["shortdef"][0].empty()){
+                                    string def_title = j[entry]["shortdef"][0].get<string>();
+                                    if(string("{/it}") == app_def_title.substr(app_def_title.size() - 5)){
+                                        out << "<strong> :  </strong>" << formatter(def_title);
+                                    }
+                                }
+                                out << "\n";
                             }
-                            out << "\n";
                         }
                     }
+                }catch(...){
+                    dic_log << "\nproblem happened here" << endl;
                 }
-            }catch(...){
-                dic_log << "\nproblem happened here" << endl;
             }
-        }
-        dic_log.close();
-        if(out.str().empty()){
-            return "Exact result not found :(\nTry to search different";
-        }else{
-            return out.str();
+            dic_log.close();
+            if(out.str().empty()){
+                return "Exact result not found :(\nTry to search different";
+            }else{
+                return out.str();
+            }
+        }catch(...){
+            return "Not found :(";
         }
     }catch(...){
-        return "Not found :(";
+        return "Sorry, Bot couldn't work correctly for this word.\nWe'll work to fix it as soon as possible";
     }
 }
 
 int main() {
     ofstream tel_log("tel_log", ios::app);
-    std::string TEST_BOT_API = getenv("NM80_DICTIONARY_BOT");
+    std::string TEST_BOT_API = getenv("NM80_DICTIONARY_BOT_API");
     TgBot::Bot bot(TEST_BOT_API);
     bot.getEvents().onCommand("start", [&bot](TgBot::Message::Ptr message) {
         bot.getApi().sendMessage(message->chat->id, start_message);
