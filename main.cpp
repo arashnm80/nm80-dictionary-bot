@@ -51,6 +51,18 @@ string formatter(string text){
     while(string::npos != (pos = text.find(first))){
         text.replace(pos, first.size(), second);
     }
+
+    first = "{phrase}";
+    second = "<strong>";
+    while(string::npos != (pos = text.find(first))){
+        text.replace(pos, first.size(), second);
+    }
+    
+    first = "{/phrase}";
+    second = "</strong>";
+    while(string::npos != (pos = text.find(first))){
+        text.replace(pos, first.size(), second);
+    }
     
     first = "{ldquo}";
     second = "\"";
