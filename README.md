@@ -7,6 +7,7 @@
 - `cmake ..`
 - `make`
 - add `@reboot address-of-cloned-repo/nm80-dictionary-bot.sh` to crontab with `crontab -e`
+- reboot the system, now the bot should be up and running
 
 **note:**
 This is my first telegram bot and for now it's only supposed to work.
