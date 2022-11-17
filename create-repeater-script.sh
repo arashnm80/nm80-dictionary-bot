@@ -5,7 +5,7 @@ cat << EOF >> nm80-dictionary-bot.sh
 while true
 do
         ps -ef | grep nm80-dictionary-bot | grep -v grep | grep -v bash | grep -v nm80-dictionary-bot.sh
-        if [ $? -eq 1 ]
+        if [ \$? -eq 1 ]
         then
                 cd $PWD/build
                 $PWD/build/nm80-dictionary-bot
