@@ -1,6 +1,6 @@
 ### how to use
 - install [C++ library for Telegram bot API](https://github.com/reo7sp/tgbot-cpp#dependencies)
-- clone the repo
+- `git clone https://github.com/arashnm80/nm80-dictionary-bot`
 - `cd build`
 - `cmake ..`
 - `make`
