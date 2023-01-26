@@ -7,7 +7,7 @@
 - `cd build`
 - `cmake ..`
 - `make`
-- add `@reboot address-of-cloned-repo/nm80-dictionary-bot.sh` to crontab with `crontab -e`
+- add `@reboot address-of-cloned-repo/nm80-dictionary-bot.sh` to crontab with `crontab -e` (change the address)
 - reboot the system, now the bot should be up and running
 
 **note:**
