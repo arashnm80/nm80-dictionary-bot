@@ -169,6 +169,11 @@ int main() {
         if (StringTools::startsWith(message->text, "/start")) {
             return;
         }
+        // bypass seeing messages from log channel:
+        std::string log_channel = getenv("LOG_CHANNEL_ID");
+        if (std::to_string(message->chat->id) == log_channel){
+            return;
+        }
         bot.getApi().sendMessage(message->chat->id, "<strong>Meanings of \"" + message->text + "\" from Merriam Webster Learner's Dictionary: \n\n</strong>" + learner_webster(message->text),false,0,std::make_shared<TgBot::GenericReply>(),"html", false);
     });
     try {
