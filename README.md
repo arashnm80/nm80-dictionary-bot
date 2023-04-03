@@ -14,3 +14,6 @@
 **note:**
 This is my first telegram bot and for now it's only supposed to work.
 I'll do the improvements and modifications later.
+
+**to-do:**
+- add log channel to this bot.
