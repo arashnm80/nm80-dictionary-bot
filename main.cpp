@@ -18,6 +18,7 @@ string lowercase(string text){
     return text;
 }
 
+// parse merriam-webster text formatting (https://dictionaryapi.com/products/json#sec-2.fmttokens)
 string formatter(string text){
     string first, second;
     size_t pos;
