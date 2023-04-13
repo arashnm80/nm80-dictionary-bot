@@ -5,7 +5,7 @@
 #include "json.hpp"
 
 using namespace std;
-using json = nlohmann::json;
+using json = nlohmann::json; // docs: https://github.com/nlohmann/json
 
 string start_message = "Hello, welcome to the <strong>nm80 dictionary bot</strong>.\nSend a word.";
 
